@@ -17,16 +17,16 @@ def printPlay(textStr,line,background):
         result = str(hex_str, encoding='utf-8')
 
         #前两位对应汉字的第一个字节：区码，每一区记录94个字符
-        area = eval('0x' + result[:2]) - 0xA0
+        area = eval('0x' + result[:2]) - 0x70
         #后两位对应汉字的第二个字节：位码，是汉字在其区的位置
-        index = eval('0x' + result[2:]) - 0xA0
+        index = eval('0x' + result[2:]) - 0x3F
         #汉字在HZK16中的绝对偏移位置，最后乘32是因为字库中的每个汉字字模都需要32字节
         offset = (94 * (area-1) + (index-1)) * 32
 
         font_rect = None
 
         #读取HZK16汉字库文件
-        with open("HZK16", "rb") as f:
+        with open("HZK16.GBK", "rb") as f:
             #找到目标汉字的偏移位置
             f.seek(offset)
             #从该字模数据中读取32字节数据
@@ -57,9 +57,6 @@ def printPlay(textStr,line,background):
         print()
 
 inpt = input("写你所想：")
-lineSign = '■'
-#lineSign = "0"
-
-backgroundSign = '○'
-#backgroundSign = "."
+lineSign = '#'
+backgroundSign = '_'
 printPlay(inpt,lineSign,backgroundSign)
